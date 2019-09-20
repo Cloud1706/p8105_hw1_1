@@ -1,0 +1,130 @@
+---
+Title: "Homework1"
+Author: "Harsha Senapathi, svs2130"
+Date: "9/20/2019"
+Output: github_document
+---
+
+## Loading required Library
+```{r Library}
+
+# Loading Library
+library(tidyverse)
+
+```
+
+
+# Problem 1
+
+## Creating a data frame and calculating the means of all the variables
+
+```{r Problem_1, warning=FALSE}
+
+# Problem 1
+# Creating a data frame
+
+set.seed(10)
+problem1_df= tibble(
+  random = rnorm(8),
+  vec_logical = random > 0,
+  vec_char = c("a", "b", "c", "d", "e", "f", "g", "h"),
+  vec_factor = as.factor(c(1,2,3,1,1,2,3,2))
+)
+
+# Since the argument is numeric, we get a value.
+# Works, we get a value.
+mean(pull(problem1_df, random)) 
+
+
+# Since the argument is logical, we get a value.
+# Works, We get a value.
+mean(problem1_df$vec_logical)
+
+
+# Since the argument isn't numeric or logical, the result is NA.
+# Doesnt work, we get NA.
+mean(problem1_df$vec_char)
+
+
+# Since the argument is neither numberic nor logical, the result is NA
+# Doesnt work, we get NA
+mean(problem1_df$vec_factor) 
+
+
+# Coercing the character variables as numeric.
+# It doesn't work because cannot take mean of characters.
+mean(as.numeric(problem1_df$vec_char))
+
+
+# Coercing factor vector as numeric.
+# It works we get a value.
+mean(as.numeric(problem1_df$vec_factor))
+
+     
+```
+
+## Using variables from the dataframe **problem1_df** Multiplying different variables
+
+```{r Problem_1second, warning=FALSE}
+
+# second code chunk
+
+# Coercing logical vector as numeric and multiplying with Random variable
+as.numeric(problem1_df$vec_logical)*(problem1_df$random)
+
+# Coercing logical vector as factor and multiplying with Random variable
+as.factor(problem1_df$vec_logical)*(problem1_df$random)
+
+# Coercing factor of logical vector as numeric and multiplyng with random
+as.numeric(as.factor(problem1_df$vec_logical))*(problem1_df$random)
+```
+
+
+# Problem #2
+
+## Creating ggplots
+
+### Creating a new dataframe
+
+```{r Problem2, warning=FALSE}
+
+# Creating dataframe
+set.seed(1)
+problem2_df = tibble(
+  x = rnorm(500),
+  y = rnorm(500),
+  vec_logical = c(x + y > 1),
+  vec_numeric = c(vec_logical),
+  vec_factor = c(vec_logical)
+)
+```
+
+
+### A short description of our dataframe
+
+* The number of rows in our data set is **`r nrow(problem2_df)`**.
+* The number of columns in our dataset is **`r ncol(problem2_df)`**.
+* The mean, median and Standard deviation of *x* are **`r mean(problem2_df$x)`, `r median(problem2_df$x)` and `r sd(problem2_df$x)`** respectively
+* The proportion of cases for which the logical vector(x + y > 1) is true: **`r length(problem2_df$vec_logical[which(problem2_df$vec_logical == 'TRUE')]) / nrow(problem2_df)`**.
+
+
+### Using the above dataframe **problem2_df** to create Scatter Plots
+
+```{r scatter_plot, warning=FALSE}
+
+# Creating a scatter plot of the logical vector
+ggplot(problem2_df, aes(x = x, y = y, color = vec_logical)) + geom_point()
+
+# Saving the ggplot as a png file
+ggsave(filename = "C:/Users/shvar/OneDrive - cumc.columbia.edu/Data Science/P8105_HW/problem2_df_color_logical_ggplot.png")
+
+# Creating a scatter plot using the numeric vector
+ggplot(problem2_df, aes(x = x, y = y, color = vec_numeric)) + geom_point()
+
+
+# Creating a scatter plot using the factor vector
+ggplot(problem2_df, aes(x = x, y = y, color = vec_factor)) + geom_point()
+
+```
+
+
